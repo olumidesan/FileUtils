@@ -1,6 +1,6 @@
 ## Create a screenshot by clicking the edges of the area you want to capture.
 
-### Note: Incomplete due to pynput `mouse.scroll` issue*
+Note: Incomplete due to pynput `mouse.scroll` issue*
 
 ## Requirements
   - Python 3.3+
