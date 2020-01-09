@@ -32,7 +32,6 @@ class MyFileHandler(FileSystemEventHandler):
                 for fn in os.listdir(source):
                     if os.path.isfile(p_proxy(source, fn)) and not \
                     (p_proxy(source, fn).endswith('.tmp') or p_proxy(source, fn).endswith('.crdownload')):               
-                        # fn_ = fn[fn.index('.'):].lower()
                         fn_ = f".{fn.rsplit('.', 1)[-1].lower()}"
                         for k,v in folders.items():
                             if fn_ in v:
@@ -49,11 +48,14 @@ class MyFileHandler(FileSystemEventHandler):
                 break
 
 
-def main():
-    """Main Script"""
+def watch_folder():
+    """Main Script that automatically moves downloaded files
+       to their respective folders in the Downloads folder.
+       Effectively prevents clutter.
+    """
 
     observer = Observer()
-    observer.schedule(MyFileHandler(), source, recursive=True)
+    observer.schedule(MyFileHandler(), source, recursive=False)
     observer.start()
 
     try:
@@ -63,4 +65,6 @@ def main():
         observer.stop()
         observer.join()
 
-main() if __name__ == "__main__" else None
+
+# Prevent running when importing
+watch_folder() if __name__ == "__main__" else None
