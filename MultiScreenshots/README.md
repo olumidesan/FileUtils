@@ -16,18 +16,22 @@
   1. The most relevant public method in the ```Screenshot``` class is ```take()```, which takes a screenshot.
   Simply call it directly and pass in your desired options. E.g:
   
-    ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
-    
-    ```Screenshot().take(multiple=True)``` -> Take multiple screenshots and don't merge them.
-    
-    ```Screenshot().take()``` -> Take a single screenshot.
+  ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
+
+  ```Screenshot().take(multiple=True)``` -> Take multiple screenshots and don't merge them.
+
+  ```Screenshot().take()``` -> Take a single screenshot.
 
   2. After installing the required packages, simply run the script from the folder you want the screenshot to be saved i.e. ```python3 ms.py```. The console then prompts for mouse clicks as below.
   3. **Click** the edges of the area in the following order: top-left, top-right, bottom-left, bottom-right. (Note that it's not a bounding box--there's no dragging, but only **clicking** of the edges of the intended image).
   4. After taking the first screenshot, if the ```multiple``` flag of the ```Screenshot``` class was set to ```True```, you'll be prompted with one of three keyboard options which does the corresponding action on the right.
-  ```Shift``` ==> ```Manualy take another screenshot```
-  ```Ctrl``` ==> ```Automatically continue taking screenshots```
-  ```Esc``` ==> ```Stop taking screenshots now```
+  
+  ```Shift``` ```==>``` ```Manualy take another screenshot```
+  
+  ```Ctrl``` ```==>``` ```Automatically continue taking screenshots```
+  
+  ```Esc``` ```==>``` ```Stop taking screenshots now```
+  
   5. If ```Ctrl``` is pressed, i.e screenshots should be taken automatically, to stop this once done, ```Ctrl``` should be pressed again.
   
   You can also watch [the included video](example.mp4)
