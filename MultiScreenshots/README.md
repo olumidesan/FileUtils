@@ -18,7 +18,7 @@
   3. There is really only one public method in the ```Screenshot``` class - ```take()```, so there's really no need to make an instance.
   Simply call it directly and pass in your desired options. E.g:
   
-  ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and merge finally merge them into one file.
+  ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
   
   ```Screenshot().take(multiple=True)``` -> Take multiple screenshots and don't merge them.
   
