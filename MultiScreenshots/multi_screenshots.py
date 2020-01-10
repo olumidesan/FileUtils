@@ -177,7 +177,7 @@ class Screenshot:
         """Captures an image of the `shot_region` area"""
         
         # Scroll the vertical height of the window to take the next screenshot
-        scroll_length = ceil(self.PIXEL_FACTOR * self._shot_region[-1]) + 2
+        scroll_length = ceil(self.PIXEL_FACTOR * self._shot_region[-1]) + 1
         
         self._position_mouse()
         controlled_scroll(scroll_length)
