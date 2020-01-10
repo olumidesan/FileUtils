@@ -13,7 +13,7 @@
     ```sudo apt-get install python3-dev``` 
   
 ## How to Use
-  1. The most relevant public method in the ```Screenshot``` class is ```take()```, which takes a screenshot.
+  1. The most relevant public method in the ```Screenshot``` class is ```take()```, which, unsurprisingly, takes a screenshot.
   Simply call it directly and pass in your desired options. E.g:
   
   ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
@@ -34,7 +34,7 @@
   
   5. If ```Ctrl``` is pressed, i.e screenshots should be taken automatically, to stop this once done, ```Ctrl``` should be pressed again.
   
-  You can also watch [the included video](example.mp4)
+  You can also watch [the included video](example.mp4) to get a better feel of how it works.
   
 ### Motivation
 I needed to screenshoot a whole page on Chrome, and did not want to have to take a screenshot, scroll down, take another screenshot, etc. I wanted everything on the page as one picture, with a command called once. With this project I tried to create a script that automatically scrolled down the page (per my command), taking screenshots as it scrolled and merging them into one picture (if required). 
