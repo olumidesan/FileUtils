@@ -70,8 +70,8 @@ class Screenshot:
         # `Manager.dict()` needed for inter-process communication
         self._mgr = Manager().dict()
         self._mgr['now'] = time.time() # Save a copy of the current time
+        self._mgr['auto_mode'] = False # A flag for setting the screenshot mode
         self._mgr['shots_count'] = 0 # Counter for the number of screenshots made 
-        self._mgr['auto_mode'] = False # A mode flag
 
         # Screen Coordinates
         self._coordinates = {'top_left': [], 'top_right': [],
@@ -82,15 +82,20 @@ class Screenshot:
         Starts Keyboard event listener that continues/stops the screenshooting process
         based on the pressed key
         """
-        if key in SHIFT_KEYS: # Continue manual screenshooting
-            self._screenshoot()
-        
-        elif key in CTRL_KEYS: # Continue automatic screenshooting  
-            self._mgr['auto_mode'] = True # Set the flag globally
-            return False
-        
-        elif key == ESC_KEY: # Stop screenshooting immediately
-            return False # Kill the listener
+        if self._mgr['auto_mode']:
+            if key in CTRL_KEYS:
+                self._mgr['auto_mode'] = False # Disable Auto mode
+                return False
+        else:
+            if key in SHIFT_KEYS: # Continue manual screenshooting
+                self._screenshoot()
+            
+            elif key in CTRL_KEYS: # Initiate automatic screenshooting  
+                self._mgr['auto_mode'] = True # Enable Auto mode
+                return False
+            
+            elif key == ESC_KEY: # Stop screenshooting immediately
+                return False # Kill the listener
 
     def _track_mouse_clicks(self, x, y, button, pressed):
         if pressed:
@@ -120,11 +125,12 @@ class Screenshot:
 
     def _start_keyboard_listener(self):
         """Creates the listener object that tracks keyboard presses"""
-
-        print(f"\n {'Screenshot Keyboard Options':^10}: \
-                \n `Shift` {'==>':^5} Manualy take another screenshot. \
-                \n `Ctrl` {'==>':^5} Automatically continue taking screenshots (Press `Ctrl+C` to end). \
-                \n `Esc` {'==>':^5} Stop taking screenshots now.\n")
+        
+        if not self._mgr['auto_mode']:
+            print(f"\n {'Screenshot Keyboard Options':^10}: \
+                    \n `Shift` {'==>':^3} Manualy take another screenshot. \
+                    \n `Ctrl` {'==>':^3} Automatically continue taking screenshots \
+                    \n `Esc` {'==>':^3} Stop taking screenshots now.\n")
         with keyboard.Listener(on_press=self._track_keyboard_presses) as kl:
             kl.join() 
 
@@ -148,6 +154,7 @@ class Screenshot:
         imgs = []
 
         # Create an array of all the individual screenshots
+        # Ignore files not found and work with the ones found
         for i in shots:
             with suppress(FileNotFoundError):
                 imgs.append(PIL.Image.open(i))        
@@ -177,7 +184,7 @@ class Screenshot:
         """Captures an image of the `shot_region` area"""
         
         # Scroll the vertical height of the window to take the next screenshot
-        scroll_length = ceil(self.PIXEL_FACTOR * self._shot_region[-1]) + 1
+        scroll_length = ceil(self.PIXEL_FACTOR * self._shot_region[-1]) + 2
         
         self._position_mouse()
         controlled_scroll(scroll_length)
@@ -195,7 +202,18 @@ class Screenshot:
             fn = f"temp_{self._mgr['now']}_{i}.png"
             with suppress(OSError):
                 os.remove(fn)        
-                                 
+    
+    def _start_kl_process(self):
+        """
+        Starts the keyboard listener in a separate process
+        to avoid GIL clash between the mouse and keyboard listeners
+        """
+
+        klp = Process(target=self._start_keyboard_listener, daemon=True)
+        klp.start()
+
+        return klp    
+
     def take(self):
         """Starts screenshooting"""
 
@@ -215,28 +233,28 @@ class Screenshot:
 
         if self.is_multiple:
             self._mgr['shots_count'] += 1          
-            end_message = "Finished taking screenshots.\n"
+            end_message = "\nFinished taking screenshots.\n"
 
             # Get ready
             time.sleep(0.5)
             self._position_mouse()
 
-            # Start the keyboard listener in a separate process.
-            # This prevents GIL clash between the mouse and the keyboard listeners.
-            klp = Process(target=self._start_keyboard_listener)
-            klp.start()
+            klp = self._start_kl_process()
             klp.join()
 
             # Automatic screenshot mode
             if self._mgr['auto_mode']:
-                print("\nIn auto-screenshot mode. Press `Ctrl+C` to stop.")
-                while 1:
-                    try:
-                        self._screenshoot()
-                    # `Ctrl + C` stops the continuous scroll
-                    except KeyboardInterrupt:
-                        break
-
+                klp = self._start_kl_process()
+                print("\nIn auto-screenshot mode. Press `Ctrl` to stop.")
+                
+                # Continue screenshooting until `Ctrl` is pressed
+                # Once `Ctrl` is pressed, screenshooting will stop
+                # after current iteration.
+                while self._mgr['auto_mode']:
+                    self._screenshoot()
+                else:
+                    klp.join()
+            
             if self.should_be_merged:
                 shots = [f"temp_{self._mgr['now']}_{j}.png" for j in range(self._mgr['shots_count'])]            
                 Screenshot.merge_screenshots(shots)   
@@ -250,5 +268,5 @@ class Screenshot:
 
         print(end_message)
 
-# Screenshot(multiple=True, merge=False).take() if __name__ == "__main__" else None
+# Screenshot(multiple=True, merge=True).take() if __name__ == "__main__" else None
 

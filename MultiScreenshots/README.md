@@ -15,7 +15,7 @@
 ## How to Use
   1. After installing the required packages, simply run the script from the folder you want the screenshot to be saved.
   2. **Click** the edges of the area in the following order: top-left, top-right, bottom-left, bottom-right. (Note that it's not a bounding box--there's no dragging; but only **clicking** of the edges of the intended image).
-  3. There is really only one public method in the ```Screenshot``` class - ```take()```, so there's really no need to make an instance.
+  3. The most relevant public method in the ```Screenshot``` class is ```take()```, which takes a screenshot.
   Simply call it directly and pass in your desired options. E.g:
   
   ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
