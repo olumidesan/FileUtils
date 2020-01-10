@@ -1,6 +1,6 @@
 ## Create a screenshot by clicking the edges of the area you want to capture.
 
-### Note: Incomplete due to pynput `mouse.scroll` issue*
+Note: Incomplete due to pynput `mouse.scroll()` issue*
 
 ## Requirements
   - Python 3.3+
@@ -19,4 +19,4 @@
   2. **Click** the edges of the area in the following order: top-left, top-right, bottom-left, bottom-right. (Note that it's not a bounding box--there's no dragging; but only _clicking_ of the edges of the intended image)
   
 ### Motivation
-I need to be able to take screenshots of a whole page, not just a snip of some area on the page. With this project I tried to create a script that automatically scrolls down the page (per your command), taking screenshots as I went. It works currently, but not as I want it to.
+I needed to be able to take screenshots of a whole page, not just a snip of some area on the page. With this project I tried to create a script that automatically scrolled down the page (per my command), taking screenshots as it scrolled. It works currently, but not as I want it to.
