@@ -23,6 +23,8 @@
   ```Screenshot().take(multiple=True)``` -> Take multiple screenshots and don't merge them.
   
   ```Screenshot().take()``` -> Take a single screenshot.
+
+  You can also watch ![](usage.mp4)
   
 ### Motivation
 I needed to screenshoot a whole page on Chrome, and did not want to have to take a screenshot, scroll down, take another screenshot, etc. I wanted everything on the page as one picture, with a command called once. With this project I tried to create a script that automatically scrolled down the page (per my command), taking screenshots as it scrolled and merging them into one picture (if required). 
@@ -33,4 +35,5 @@ I needed to screenshoot a whole page on Chrome, and did not want to have to take
 3. The merging of images into one isn't perfect yet. There are edge cases.
 
 Contributions are more than welcome!
+
 

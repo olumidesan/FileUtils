@@ -82,18 +82,14 @@ class Screenshot:
         Starts Keyboard event listener that continues/stops the screenshooting process
         based on the pressed key
         """
-
         if key in SHIFT_KEYS: # Continue manual screenshooting
-            print(f"You pressed: `Shift`")
             self._screenshoot()
         
         elif key in CTRL_KEYS: # Continue automatic screenshooting  
-            print(f"You pressed: `Ctrl`")
             self._mgr['auto_mode'] = True # Set the flag globally
             return False
         
         elif key == ESC_KEY: # Stop screenshooting immediately
-            print(f"You pressed: `Esc`")
             return False # Kill the listener
 
     def _track_mouse_clicks(self, x, y, button, pressed):
@@ -254,5 +250,5 @@ class Screenshot:
 
         print(end_message)
 
-Screenshot(multiple=True, merge=True).take() if __name__ == "__main__" else None
+# Screenshot(multiple=True, merge=False).take() if __name__ == "__main__" else None
 
