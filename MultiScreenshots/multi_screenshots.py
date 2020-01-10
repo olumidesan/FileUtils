@@ -250,5 +250,5 @@ class Screenshot:
 
         print(end_message)
 
-Screenshot(multiple=True, merge=False).take() if __name__ == "__main__" else None
+# Screenshot(multiple=True, merge=False).take() if __name__ == "__main__" else None
 
