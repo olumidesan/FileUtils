@@ -16,9 +16,9 @@
   1. The most relevant public method in the ```Screenshot``` class is ```take()```, which, unsurprisingly, takes a screenshot.
   Simply call it directly and pass in your desired options. E.g:
   
-  ```Screenshot().take(multiple=True, merged=True)``` -> Take multiple screenshots and finally merge them into one file.
+  ```Screenshot(multiple=True, merged=True).take()``` -> Take multiple screenshots and finally merge them into one file.
 
-  ```Screenshot().take(multiple=True)``` -> Take multiple screenshots and don't merge them.
+  ```Screenshot(multiple=True).take()``` -> Take multiple screenshots and don't merge them.
 
   ```Screenshot().take()``` -> Take a single screenshot.
 
