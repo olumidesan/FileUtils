@@ -1,8 +1,8 @@
 import os
 from datetime import datetime
 
-from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 from argparse import ArgumentParser
+from PyPDF2 import PdfFileMerger, PdfFileReader, PdfFileWriter
 
 
 EXT = '.pdf'
@@ -56,11 +56,13 @@ def main():
 
     # Get the current date and time to allow for file-conflict 
     # avoidance when saving the generated files
-    now = datetime.now().strftime('%y%m%d_%f')
+    now = datetime.now().strftime('%y%m%d%f')
 
     if run_mode == 'merge':
-        output_file = os.path.join(os.getcwd(), f"merged_file_{now}{EXT}")
-        
+        output_file = os.path.join(os.getcwd(), f"merged_pdf_file_{now}{EXT}")
+
+        print("\nMerging PDF files...")
+
         # PDF merger object            
         merger = PdfFileMerger()
 
@@ -71,22 +73,25 @@ def main():
         
         merger.write(output_file)
 
+        print(f"Merge successful! PDF file created: {output_file}")
         # Ensures implicit split mode
         return
     
     # Split mode
     file = files[0]
     writer = PdfFileWriter()
-    output_file = os.path.join(os.getcwd(), f"split_file_{now}_")
+    output_file = os.path.join(os.getcwd(), f"split_pdf_file_{now}_")
 
     with open(file, 'rb') as f:
         read_pdf = PdfFileReader(f)
-
+        
         start = 0
         end = page
 
         if page >= read_pdf.numPages:
             raise ValueError("page argument should be less than the number of pages in the PDF file")
+        
+        print("\nSplitting PDF file...")
 
         # Create files
         for i in range(2):
@@ -101,7 +106,8 @@ def main():
             # Save each split file
             with open(f"{output_file}{str(i+1)}{EXT}", 'wb') as o_f:
                 writer.write(o_f)
-    
+
+        print(f"Split successful! Check the current directory for the 'split_pdf_file_{now}_*.pdf' files.")
     
 
 if __name__ == "__main__":
